@@ -16,6 +16,6 @@ ALLOWED_HOSTS = []
 # Note:
 - Security Key can be found under settings.py of another django project, i can't share that here.
 - If you don't know how to find one:
--create a new django project of your own, and in the settings.py you will find SECRET_KEY, copy the code and paste it under secret settings.py
+- create a new django project of your own, and in the settings.py you will find SECRET_KEY, copy the code and paste it under secret settings.py
 
 # Regards
