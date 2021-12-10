@@ -2,13 +2,14 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Topic, Entry
 from .forms import EntryForm, TopicForm
+from django.http import Http404
 
 # Create your views here.
 def index(request):
     return render(request, 'learning_logs/index.html')
 @login_required
 def topics(request):
-    topics = Topic.objects.order_by('date_added')
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 
@@ -16,6 +17,9 @@ def topics(request):
 def topic(request, topic_id):
     """Show a single topic and all its entries."""
     topic = Topic.objects.get(id=topic_id)
+    # Make sure the topic belongs to the current user
+    if topic.owner != request.user:
+        raise Http404
     entries = topic.entry_set.order_by('-date_added')
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
